@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./img/RecipeLogo.jpeg" type="image/x-icon">
+    <link rel="stylesheet" href="./assets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <title>Recipe book</title>
+</head>
+<body>
+
+    <!--- Navigation Bar -->
+    <div class="header">
+        <nav class="nav-bar">
+            <img src="./img/Logo.png" class="brand-name">
+            <a href="#" class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </a>
+            <div class="menu-bar">
+                <ul>
+                    <li><a>Home</a></li>
+                    <li><a>About</a></li>
+                    <li><a>Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+        <!-- Search Bar -->
+        <div class="title">Recipe Book</div>
+        <div class="search-wrapper">
+            <div class="fa fa-search"></div>
+            <input type="text" name=""  id="search" placeholder="Find and upload recipes here : )" onkeyup="search()">
+            <div class="fa fa-times" onclick="clearInput()" ></div>
+        </div>
+    </div>
+
+    <div class="a">
+        <button class="add-button" onclick="toggleForm()">Add Recipe</button>
+    </div>
+
+    <ul id="recipe-list"></ul>
+
+    <div id="recipe-form">
+        <h2>Add/Edit Recipe</h2>
+        <label for="recipe-name">Recipe Name:</label>
+        <input type="text" id="recipe-name" required>
+        <label for="ingredients">Ingredients:</label>
+        <textarea id="ingredients" required></textarea>
+        <label for="instructions">Instructions:</label>
+        <textarea id="instructions" required></textarea>
+        <button onclick="saveRecipe()">Save Recipe</button>
+    </div>
+
+    <script>
+        let recipes = [];
+
+        function renderRecipes() {
+            const recipeList = document.getElementById("recipe-list");
+            recipeList.innerHTML = "";
+
+            recipes.forEach((recipe, index) => {
+                const listItem = document.createElement("li");
+                listItem.className = "recipe-item";
+                listItem.innerHTML = `
+                    <div>
+                        <strong>${recipe.name}</strong><br>
+                        <em>Ingredients:</em><br>${recipe.ingredients}<br>
+                        <em>Instructions:</em><br>${recipe.instructions}
+                    </div>
+                    <div class="recipe-buttons">
+                        <button onclick="editRecipe(${index})">Edit</button>
+                        <button onclick="deleteRecipe(${index})">Delete</button>
+                    </div>
+                `;
+                recipeList.appendChild(listItem);
+            });
+        }
+
+        function toggleForm() {
+            const form = document.getElementById("recipe-form");
+            form.style.display = form.style.display === "none" ? "flex" : "none";
+        }
+
+        function saveRecipe() {
+            const name = document.getElementById("recipe-name").value;
+            const ingredients = document.getElementById("ingredients").value;
+            const instructions = document.getElementById("instructions").value;
+
+            if (name && ingredients && instructions) {
+                const recipe = { name, ingredients, instructions };
+                recipes.push(recipe);
+                renderRecipes();
+                clearForm();
+                toggleForm();
+            } else {
+                alert("Please fill in all fields.");
+            }
+        }
+
+        function editRecipe(index) {
+            const recipe = recipes[index];
+            document.getElementById("recipe-name").value = recipe.name;
+            document.getElementById("ingredients").value = recipe.ingredients;
+            document.getElementById("instructions").value = recipe.instructions;
+
+            deleteRecipe(index);
+        }
+
+        function deleteRecipe(index) {
+            recipes.splice(index, 1);
+            renderRecipes();
+        }
+
+        function clearForm() {
+            document.getElementById("recipe-name").value = "";
+            document.getElementById("ingredients").value = "";
+            document.getElementById("instructions").value = "";
+        }
+
+        // Initial rendering
+        renderRecipes();
+    </script>
+
+    <!-- Search Results -->
+        <div class="result">
+            <h1>Your Recipes from the book: </h1>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="card-grid" >
+            <div class="food-list" id="food-list">
+                    <p id="none" style="display: none;">Sorry, the food you were looking for was not available.</p>
+                    
+                    <div class="card card-shadow">
+                        <div class="card-header card-image">
+                            <img src="./img/Omelette.webp">
+                        </div>
+                        <div class="card-body" >
+                            <h3>Omelette</h3>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn" onclick="get4thRecipe()">Get Recipe</button>
+                        </div>
+                    </div>
+                    <div class="card card-shadow">
+                        <div class="card-header card-image">
+                            <img src="./img/Burger.webp">
+                        </div>
+                        <div class="card-body" >
+                        <h3>Chicken Burger</h3>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn" onclick="get8thRecipe()">Get Recipe</button>
+                        </div>
+                    </div>
+                    <div class="card card-shadow">
+                        <div class="card-header card-image">
+                            <img src="./img/Gulab-Jamun.jpg">
+                        </div>
+                        <div class="card-body" >
+                        <h3>Gulab Jamun</h3>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn" onclick="get10thRecipe()">Get Recipe</button>
+                        </div>
+                    </div>
+                    <div class="card card-shadow">
+                        <div class="card-header card-image">
+                            <img src="./img/Potato-Breakfast-Skillet.webp">
+                        </div>
+                        <div class="card-body" >
+                        <h3>Potato Egg Skillet</h3>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn" onclick="get11thRecipe()">Get Recipe</button>
+                        </div>
+                    </div>
+            </div> 
+
+            <!--Ending of Main Content-->
+
+            <!--Recipe Details-->
+            <div class = "meal-detail" id="meal-detail">
+                <!-- recipe close btn -->
+                <button type = "button" class = "btn recipe-close-btn" id = "recipe-close-btn" onclick="closeBtn()">
+                    <i class ="fas fa-times"></i>
+                </button>
+
+                <!-- recipe details -->
+                <div class="meal-content">
+                    <h2 class="meal-name">Sisig</h2>
+                    <div class="meal-about">
+                        <h3 class="meal-title-about">About Meal</h3>
+                        <p class="meal-descript-about">Sisig is a Filipino dish made from parts of a pig's face and belly, and chicken liver which is usually seasoned with calamansi, onions, and chili peppers. It originates from the Pampanga region in Luzon. Sisig is a staple of Kapampangan cuisine. </p>
+                    </div>
+                    <
+                    <div class = "meal-img">
+                        <img src = "./img/Sisig.webp" alt = "">
+                      </div>
+                      <div class = "meal-link">
+                        <a href="https://tinyurl.com/mryx6ezu" class="meal-link-btn">Watch Video</a>
+                    </div>
+                </div>
+            </div>
+            <div class = "second-meal-detail" id="second-meal-detail">
+                <!-- recipe close btn -->
+                <button type = "button" class = "btn recipe-close-btn" id = "recipe-close-btn" onclick="closeBtn()">
+                    <i class ="fas fa-times"></i>
+                </button>
+
+                <!-- recipe details -->
+                <div class="meal-content">
+                    <h2 class="meal-name">Adobo</h2>
+                    <div class="meal-about">
+                        <h3 class="meal-title-about">About Meal</h3>
+                        <p class="meal-descript-about">Philippine adobo is a popular Filipino dish and cooking process in Philippine cuisine that involves meat, seafood, or vegetables marinated in vinegar, soy sauce, garlic, bay leaves, and black peppercorns, which is browned in oil, and simmered in the marinade. </p>
+                    </div>
+                    
+                    <div class = "meal-img">
+                        <img src = "./img/Adobo.webp" alt = "">
+                      </div>
+                      <div class = "meal-link">
+                        <a href="https://tinyurl.com/23pr9c5j" class="meal-link-btn" >Watch Video</a>
+                    </div>
+                </div>
+            </div>  
+            <div class = "third-meal-detail" id="third-meal-detail">
+                <!-- recipe close btn -->
+                <button type = "button" class = "btn recipe-close-btn" id = "recipe-close-btn" onclick="closeBtn()">
+                    <i class ="fas fa-times"></i>
+                </button>
+
+                <!-- recipe details -->
+                <div class="meal-content">
+                    <h2 class="meal-name">Sizzling Porkchop</h2>
+                    <div class="meal-about">
+                        <h3 class="meal-title-about">About Meal</h3>
+                        <p class="meal-descript-about">Sizzling Pork Chop tastes excellent and is simple to make. The sizzling effect adds to the pleasure of this dish. Aside from the pork chop, this dish requires mixed veggies, yellow rice, and gravy. I used fresh frozen mixed vegetables for the vegetables. 
+                        </p>
+                    </div>
+                    
+                    <div class = "meal-img">
+                        <img src = "./img/Porkchop.webp" alt = "">
+                      </div>
+                      <div class = "meal-link">
+                        <a href="https://tinyurl.com/yckbt76x" class="meal-link-btn" >Watch Video</a>
+                    </div>
+                </div>
+            </div>  
+            <div class = "four-meal-detail" id="four-meal-detail">
+                <!-- recipe close btn -->
+                <button type = "button" class = "btn recipe-close-btn" id = "recipe-close-btn" onclick="closeBtn()">
+                    <i class ="fas fa-times"></i>
+                </button>
+
+                <!-- recipe details -->
+                <div class="meal-content">
+                    <h2 class="meal-name">Omelette</h2>
+                    <div class="meal-about">
+                        <h3 class="meal-title-about">About Meal</h3>
+                        <p class="meal-descript-about">In cuisine, an omelette is a dish made from beaten eggs, fried with butter or oil in a frying pan. It is quite common for the omelette to be folded around fillings such as chives, vegetables, mushrooms, meat, cheese, onions or some combination of the above. 
+                        </p>
+                    </div>
+                    <div class = "meal-instruct">
+                        <h3>Ingridients:</h3>
+                        <p><br>3 eggs, beaten
+                            <br>1 tsp sunflower oil
+                            <br>1 tsp butter
+                        </p>
+                        <h3>Instruction:</h3>
+                        <p><br>1. Beat the eggs: Use two or three eggs per omelette, depending on how hungry you are. Beat the eggs lightly with a fork.
+                            2. Melt the butter: Use an 8-inch nonstick skillet for a 2-egg omelette, a 9-inch skillet for 3 eggs. Melt the butter over medium-low heat, and keep the temperature low and slow when cooking the eggs so the bottom doesn’t get too brown or overcooked.
+                            3. Add the eggs: Let the eggs sit for a minute, then use a heatproof silicone spatula to gently lift the cooked eggs from the edges of the pan. Tilt the pan to allow the uncooked eggs to flow to the edge of the pan.
+                            4. Fill the omelette: Add the filling—but don’t overstuff the omelette—when the eggs begin to set. Cook for a few more seconds
+                            5. Fold and serve: Fold the omelette in half. Slide it onto a plate with the help of a silicone spatula.
+                        </p>
+                
+                    </div>
+                    <div class = "meal-img">
+                        <img src = "./img/Omelette.webp" alt = "">
+                      </div>
+                      <div class = "meal-link">
+                        <a href="https://tinyurl.com/bde4yd4u" class="meal-link-btn" >Watch Video</a>
+                    </div>
+                </div>
+            </div>  
+            <div class = "five-meal-detail" id="five-meal-detail">
+                <!-- recipe close btn -->
+                <button type = "button" class = "btn recipe-close-btn" id = "recipe-close-btn" onclick="closeBtn()">
+                    <i class ="fas fa-times"></i>
+                </button>
+
+                <!-- recipe details -->
+                <div class="meal-content">
+                    <h2 class="meal-name">Sinigang</h2>
+                    <div class="meal-about">
+                        <h3 class="meal-title-about">About Meal</h3>
+                        <p class="meal-descript-about">Sinigang is a Filipino soup or stew characterized by its sour and savory taste. It is most often associated with tamarind, although it can use other sour fruits and leaves as the souring agent. It is one of the more popular dishes in Filipino cuisine.
+                        </p>
+                    </div>
+                    
+                    <div class = "meal-img">
+                        <img src = "./img/Sinigang.webp" alt = "">
+                      </div>
+                      <div class = "meal-link">
+                        <a href="https://tinyurl.com/ywbcrx4f" class="meal-link-btn" >Watch Video</a>
+                    </div>
+                </div>
+            </div> 
+            <div class = "six-meal-detail" id="six-meal-detail">
+                <!-- recipe close btn -->
+                <button type = "button" class = "btn recipe-close-btn" id = "recipe-close-btn" onclick="closeBtn()">
+                    <i class ="fas fa-times"></i>
+                </button>
+
+                <!-- recipe details -->
+                <div class="meal-content">
+                    <h2 class="meal-name">Lumpia</h2>
+                    <div class="meal-about">
+                        <h3 class="meal-title-about">About Meal</h3>
+                        <p class="meal-descript-about">Different spring rolls known as "lumpia" are popular in the Philippines and Indonesia. Lumpia are formed of a thin pastry skin, also known as a "lumpia wrapper," that encloses either savory or sweet fillings. It may be either fresh or deep-fried and is frequently served as an appetizer or snack.
+                        </p>
+                    </div>
+                    
+                    <div class = "meal-img">
+                        <img src = "./img/Lumpia.webp" alt = "">
+                      </div>
+                      <div class = "meal-link">
+                        <a href="https://tinyurl.com/2yp63vne" class="meal-link-btn" >Watch Video</a>
+                    </div>
+                </div>
+            </div> 
+            <div class = "seven-meal-detail" id="seven-meal-detail">
+                <!-- recipe close btn -->
+                <button type = "button" class = "btn recipe-close-btn" id = "recipe-close-btn" onclick="closeBtn()">
+                    <i class ="fas fa-times"></i>
+                </button>
+
+                <!-- recipe details -->
+                <div class="meal-content">
+                    <h2 class="meal-name">Longaniza</h2>
+                    <div class="meal-about">
+                        <h3 class="meal-title-about">About Meal</h3>
+                        <p class="meal-descript-about">A chorizo-like Spanish sausage known as longaniza is also closely related to the Portuguese linguiça. Its distinctive qualities are viewed differently in each locale.
+                        </p>
+                    </div>
+                    
+                    <div class = "meal-img">
+                        <img src = "./img/Longanisa.webp" alt = "">
+                      </div>
+                      <div class = "meal-link">
+                        <a href="https://tinyurl.com/uxpfxkb4" class="meal-link-btn" >Watch Video</a>
+                    </div>
+                </div>
+            </div> 
+            <div class = "eight-meal-detail" id="eight-meal-detail">
+                <!-- recipe close btn -->
+                <button type = "button" class = "btn recipe-close-btn" id = "recipe-close-btn" onclick="closeBtn()">
+                    <i class ="fas fa-times"></i>
+                </button>
+
+                <!-- recipe details -->
+                <div class="meal-content">
+                    <h2 class="meal-name">Chicken Burger</h2>
+                    <div class="meal-about">
+                        <h3 class="meal-title-about">About Meal</h3>
+                        <p class="meal-descript-about">Prepare the buns! For the ideal stuffing for juicy burgers, coat or marinate chicken thighs and breast. Dig it after adding toppings like slaw and sauce along with your selected side dishes.
+                        </p>
+                    </div>
+                    <div class = "meal-instruct">
+                        <h3>Ingridients:</h3>
+                        <p><br>3 boneless chicken breasts (around half a kg)
+                            <br>1 tspn of pepper
+                            <br>1 tspn of salt
+                            <br>2 tblspns of worcestershire sauce
+                            <br>1 tspn of Mustard powder or all spice powder
+                            <br>2 tblspns of Flour
+                            <br>1 Egg
+                            <br>1 1/2 cups of Breadcrumbs
+                            <br>Soft seeded burger buns
+                            <br>Mayonnaise or KFC Zinger Sauce
+                        </p>
+                        <h3>Instruction:</h3>
+                        <p><br>1. If your chicken breasts are too big, slice them before cooking. Then, marinade the chicken breasts in the Worcestershire sauce, pepper, salt, mustard, or all-spice powder. Leave the chicken for at least four hours or over night.
+                            <br>2. An egg and two tablespoons of water should be beaten together to make the batter, which should then be set aside.
+                            <br>3. Chicken breasts that have been marinated should be heavily dusted in flour. They should be well coated after being dipped in both the egg and the breadcrumbs.
+                            <br>4. The coated chicken breasts should be deep-fried in heated oil over a medium-high heat until they are crisp and golden brown.
+                            <br>5. The finished burger should be stacked with the lettuce on top, followed by the chicken, and then the mayonnaise or KFC zinger sauce. The buns should be cut in half and lightly toasted. If you'd like a cheesy kick, add some sliced American cheese.
+                        </p>
+                
+                    </div>
+                    <div class = "meal-img">
+                        <img src = "./img/Burger.webp" alt = "">
+                      </div>
+                      <div class = "meal-link">
+                        <a href="https://tinyurl.com/td757uct" class="meal-link-btn" >Watch Video</a>
+                    </div>
+                </div>
+            </div> 
+            <div class = "nine-meal-detail" id="nine-meal-detail">
+                <!-- recipe close btn -->
+                <button type = "button" class = "btn recipe-close-btn" id = "recipe-close-btn" onclick="closeBtn()">
+                    <i class ="fas fa-times"></i>
+                </button>
+            </div> 
+            <div class = "ten-meal-detail" id="ten-meal-detail">
+                <!-- recipe close btn -->
+                <button type = "button" class = "btn recipe-close-btn" id = "recipe-close-btn" onclick="closeBtn()">
+                    <i class ="fas fa-times"></i>
+                </button>
+
+                <!-- recipe details -->
+                <div class="meal-content">
+                    <h2 class="meal-name">Gulab Jamun</h2>
+                    <div class="meal-about">
+                        <h3 class="meal-title-about">About Meal</h3>
+                        <p class="meal-descript-about">Gulab jamun is a popular South Asian sweet consisting of deep-fried milk-solid dumplings soaked in sugar syrup, known for its rich and indulgent flavor.
+                        </p>
+                    </div>
+                    <div class = "meal-instruct">
+                        <h3>Ingridients:</h3>
+                        <p><br><b>For Gulab Jamun Balls:</b>
+                            <br>1 cup khoya (milk solids)
+                            <br>1/4 cup all-purpose flour (maida)
+                            <br>1/4 cup paneer (optional)
+                            <br>A pinch of baking soda
+                            <br>Ghee or oil for deep frying
+                            <br><b>For Sugar Syrup:</b>
+                            <br>1 cup sugar
+                            <br>1 cup water
+                            <br>1/2 teaspoon cardamom powder
+                            <br>A few strands of saffron (optional)
+                            <br>1 teaspoon rose water
+                        </p>
+                        <h3>Instruction:</h3>
+                        <p><br>1. Mix khoya, all-purpose flour, and optional paneer to form a soft dough with a pinch of baking soda.
+                            <br>2. Shape the dough into crack-free balls, ensuring smooth surfaces.
+                            <br>3. Deep-fry the balls in ghee or oil until golden brown over low-medium heat.
+                            <br>4. Prepare sugar syrup with sugar, water, cardamom powder, saffron (optional), and rose water.
+                            <br>5. Immerse the fried balls in the warm sugar syrup, ensuring they soak for 1-2 hours.
+                            <br>6. Serve the soft and sweet gulab jamun, optionally garnished with chopped nuts.
+                        </p>
+                
+                    </div>
+                    <div class = "meal-img">
+                        <img src = "./img/Gulab-Jamun.jpg" alt = "">
+                      </div>
+                      <div class = "meal-link">
+                        <a href="https://youtu.be/QFvd7u_YjVk?si=GUjYEsCQI8qgSLB_" class="meal-link-btn" >Watch Video</a>
+                    </div>
+                </div>
+            </div> 
+            <div class = "eleven-meal-detail" id="four-meal-detail">
+                <!-- recipe close btn -->
+                <button type = "button" class = "btn recipe-close-btn" id = "recipe-close-btn" onclick="closeBtn()">
+                    <i class ="fas fa-times"></i>
+                </button>
+
+                <!-- recipe details -->
+                <div class="meal-content">
+                    <h2 class="meal-name">Potato Egg Skillet</h2>
+                    <div class="meal-about">
+                        <h3 class="meal-title-about">About Meal</h3>
+                        <p class="meal-descript-about">In cuisine, an omelette is a dish made from beaten eggs, fried with butter or oil in a frying pan. It is quite common for the omelette to be folded around fillings such as chives, vegetables, mushrooms, meat, cheese, onions or some combination of the above. 
+                        </p>
+                    </div>
+                    <div class = "meal-instruct">
+                        <h3>Ingridients:</h3>
+                        <p><br>8 strips raw bacon
+                            <br>1 lbs Yukon gold potatoes, diced into bite sized pieces
+                            <br>1 small yellow onion, diced
+                            <br>½ red bell pepper, diced
+                            <br>½ green bell pepper, diced
+                            <br>3 cloves garlic, minced
+                            <br>1 teaspoon cumin
+                            <br>¼ teaspoon chili powder
+                            <br>¼ teaspoon paprika
+                            <br>½ teaspoon black pepper
+                            <br>½ teaspoon coarse salt
+                            <br>4 eggs
+                            <br>¼ cup mozzarella cheese, grated
+                            <br>¼ cup cheddar cheese, grated
+                            <br>Extra virgin olive oil for extra drizzling
+                            <br>Fresh cilantro roughly chopped, thinly sliced chives for garnish
+                        </p>
+                        <h3>Instruction:</h3>
+                        <p><br>1. Preheat oven to 400˚F. Place strips of bacon in a large (at least 10 inch), oven safe skillet. Cook over medium low heat on both sides until cooked through but not yet crispy, about 10 minutes. Remove from heat to a paper towel lined plate and set aside, leaving the bacon grease in the pan. When the bacon is cool enough to handle, roughly dice.
+                            <br>Increase the heat to medium high, add the potatoes, bell pepper, and onion and cook for 7- 8 minutes, stirring frequently, until starting to soften and can be pierced with a fork
+                            <br>Add garlic, cumin, chili powder, paprika, black pepper, and salt. Cook for 1-2 minutes, until garlic is fragrant.
+                            <br>Using a spoon, create 4 to 6 holes (depending on how many eggs you want) in the hash mixture for the eggs. Distribute the cheeses evenly into each hole, and then crack one egg into each hole.
+                            <br>Place in the preheat oven and cook for 8-10 minutes, until egg white is set but the yolk is still runny.
+                            <br>Remove from heat. Sprinkle with cooked bacon. Garnish with fresh ground black pepper, cilantro and chives.
+                        </p>
+                
+                    </div>
+                    <div class = "meal-img">
+                        <img src = "./img/Potato-Breakfast-Skillet.webp " alt = "">
+                      </div>
+                      <div class = "meal-link">
+                        <a href="https://tinyurl.com/yz55k3bv" class="meal-link-btn" >Watch Video</a>
+                    </div>
+                </div>
+            </div> 
+            
+            
+        </div>
+            <!--Ending of Recipe Details-->
+
+            <!--Footer-->
+    <div class="footer">
+        <div class="social-btn">
+            <a href="https://www.facebook.com" target="_blank" ><i class="	fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com" target="_blank" ><i class="	fab fa-instagram"></i></a>
+            <a href="https://www.linkedin.com" target="_blank"><i class="	fab fa-linkedin"></i></a>
+            <a href="https://github.com" target="_blank" "><i class="	fab fa-github"></i></a>
+        </div>
+            <div class="quick-bar">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        <p>Copyright &copy; 2023 Shashank Singh All right reserved</p>  
+    </div>
+
+    <!--Ending of Footer-->
+
+<!--Script for Javascript-->
+<script src="./assets/index.js"></script>
+</body>
+</html>
